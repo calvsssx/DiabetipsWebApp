@@ -1,0 +1,38 @@
+.center{
+    display: block;
+    padding-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    height: 20%;
+
+}
+
+input{
+    border-radius: 25px;
+    border: 2px solid rgb(6, 115, 240);
+    padding: 20px; 
+    width: 400px;
+    height: 15px;
+}
+#loginForm{
+    position: relative;
+    text-align:center;
+    
+}
+#buttonLogin{
+    background-color: rgb(255, 255, 255);
+    border: solid rgb(6, 115, 240);
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+   
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 400px;
+    border-radius: 25px;
+}
+#buttonLogin:hover {
+    background-color: #f1f1f1;
+  }

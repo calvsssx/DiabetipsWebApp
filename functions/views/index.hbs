@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Diabetips</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+   
+  
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="style.css"></link>
+   
+</head>
+<body>  
+      
+      <div id="login_div" class="main-div">
+          <img id="img" src="logoblacktext.png">
+          <input type="email" placeholder="Email..." id="email_field" />
+          <input type="password" placeholder="Password..." id="password_field" />
+      
+          <button onclick="login()">Login to Account</button>
+        </div>
+        <div id="user_div_fail" class="loggedin-div-fail">
+            <h3>You're not logged in as Admin</h3>
+            <p>Please log out of the application.</p>
+            <button onclick="logout()">Logout</button>
+          </div>
+          <!--MAIN CONTENT-->
+
+            
+        <div id="user_div" class="loggedin-div">
+          <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+            <div class="container">
+              <div class="navbar-header">
+                <a href="./" class="navbar-brand">Diabetips</a>
+              </div>
+              <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                  <li>
+                    
+                  </li>
+                  <li>
+                    <a href="#"><p id="user_para"></p></a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account Settings <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">CHANGE PASSWORD</a></li>
+                      <li><a onclick="logout()">LOGOUT</a></li>
+                    </ul>
+                  </li>
+                
+                </ul>
+              </nav>
+            </div>
+          </header>
+          
+         <!--TABLE-->
+
+         
+         <div id="contents">
+           
+         <h1 style="padding-left: 14%;">LIST OF PATIENTS</h1><br>
+
+            <table id="table_id" class="display">
+              <thead>
+                  <tr>
+                      <th>Profile Picture</th>
+                      <th>Name</th>
+                      <th>Age</th>
+                      <th>Blood Type</th>
+                      <th>Type of Diabetes</th>
+                      <th>Is the Patient Taking Insulin?</th>
+                      <th>Action</th>
+                      
+                  </tr>
+              </thead>
+              <tbody>
+                  {{#each users}}
+                  <tr>
+                  <td><img src="{{profileimage}}" style="width:150px; height:150px;"></td>
+                  <td>{{fullname}}</td>
+                  <td>{{age}}</td>
+                  <td>{{bloodtype}}</td>
+                  <td>{{diabetes}}</td>
+                  <td>{{insulin}}</td>
+                  <td><form action="/patient" method="POST">
+                    <input type="hidden" value="{{uid}}" name="id">
+                    <input type="hidden" value="{{fullname}}" name="fullname">
+                    <input type="hidden" value="{{age}}" name="age">
+                    <input type="hidden" value="{{bloodtype}}" name="bloodtype">
+                    <input type="hidden" value="{{diabetes}}" name="diabetes">
+                    <input type="hidden" value="{{insulin}}" name="insulin">
+                    <input type="hidden" value="{{profileimage}}" name="profileimage">
+                    
+                  <button type="submit" class="btn btn-primary btn-lg">View Record
+
+                  </button></form></td>
+                  </tr>
+                {{/each}}
+              </tbody>
+          </table>
+          </div>
+       
+                
+          <!--END OF FILE-->
+        
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <script>
+        $('#exampleModalLong').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+            })
+    </script>
+    <script src="datatables.js"></script>
+  
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase-functions.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase-database.js"></script>
+    
+    <script>// Initialize Firebase
+            var config = {
+              apiKey: "AIzaSyCZN-ln1e7A9bPm9EkfJImL8o84uX1D6nA",
+              authDomain: "diabetips-d7a7f.firebaseapp.com",
+              databaseURL: "https://diabetips-d7a7f.firebaseio.com",
+              projectId: "diabetips-d7a7f",
+              storageBucket: "diabetips-d7a7f.appspot.com",
+              messagingSenderId: "210253892126"
+            };
+            firebase.initializeApp(config);
+
+            const database = firebase.database();
+            const functions = firebase.functions();
+            const auth = firebase.auth();
+
+    </script>
+     <script src="index.js"></script>
+     <script src="auth.js"></script>
+
+      
+</body>
+</html>

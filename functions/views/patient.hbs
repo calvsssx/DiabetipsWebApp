@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Diabetips</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css"></link>
+   
+</head>
+<body>  
+     
+
+        
+          <!--MAIN CONTENT-->
+          <!--MODAL-->
+          {{!-- modal --}}
+          <div class="modal fade" id="bpmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="exampleModalLabel">Patient's Notes</h4>
+                </div>
+                <div class="modal-body">
+                  
+                  <p>
+                    <ol id="notes"></ol>
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Send message</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="glucosemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="exampleModalLabel">Patient's Notes</h4>
+                </div>
+                <div class="modal-body">
+                  
+                  <p>
+                    <ol id="glunote"></ol>
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Send message</button>
+                </div>
+              </div>
+            </div>
+          </div>
+                   
+                    
+        <div id="user_div" class="loggedin-div">
+          <!-- Fixed navbar -->
+             <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+            <div class="container">
+              <div class="navbar-header">
+                <a href="./" class="navbar-brand">Diabetips</a>
+              </div>
+              <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                  <li>
+                    
+                  </li>
+                  <li>
+                    <a href="#"><p id="user_para"></p></a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account Settings <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">CHANGE PASSWORD</a></li>
+                      <li><a onclick="logout()">LOGOUT</a></li>
+                    </ul>
+                  </li>
+                
+                </ul>
+              </nav>
+            </div>
+          </header>
+          
+         <!--TABLE-->
+        <br><br><br>
+        <div id="patient-info">
+        <p><img src="{{profileimage}}" style="width:250px; height:170px; float:left; margin-right:20px;"></p>
+        <h1>{{fullname}}</h1>
+        <p>Age : {{age}}</p>
+        <p>Blood Type: {{bloodtype}}</p>
+        <p>Diabetes Type: {{diabetes}}</p>
+        <p>Is the patient taking insulin? {{insulin}}</p>
+        
+        </div>
+
+                <div role="tabpanel">
+                
+                           <!-- Nav tabs -->
+                           <ul class="nav nav-tabs" role="tablist">
+                               <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Blood Pressure Logs</a>
+
+                               </li>
+                               <li role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab">Glucose Logs</a>
+
+                               </li>
+                               <li role="presentation"><a href="#browseTab1" aria-controls="browseTab1" role="tab" data-toggle="tab">Blood Pressure Graphs</a>
+
+                               </li>
+                               <li role="presentation"><a href="#browseTab2" aria-controls="browseTab2" role="tab" data-toggle="tab">Glucose Graphs</a>
+
+                               </li>
+                           </ul>
+                           <!-- Tab panes -->
+                           <div class="tab-content">
+                               <div role="tabpanel" class="tab-pane active" id="uploadTab">
+                                        <table id="table_id2" class="display" id="bp">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Time</th>
+                                                    <th>Blood Pressure</th>
+                                                    <th>Pulse</th>
+                                                    <th>Blood Pressure Status</th>
+                                                    <th>Notes</th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each bp}}
+                                                <tr>
+                                                <td>{{date}}</td>
+                                                <td>{{time}}</td>
+                                                <td>{{bloodpressure}}</td>
+                                                <td>{{pulse}}</td>
+                                                <td>{{bloodpressurestatus}}</td>
+                                                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bpmodal" data-whatever="{{notes}}">View Patient's Notes</button></td>
+                                                </tr>
+                                              {{/each}}
+                                            </tbody>
+                                        </table>
+                               </div>
+                               <div role="tabpanel" class="tab-pane" id="browseTab">
+                                     <table id="table_id3" class="display">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Time</th>
+                                                    <th>Glucose Value</th>
+                                                    <th>Glucose Description</th>
+                                                    <th>Notes</th>
+                                                    
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each glucose}}
+                                                <tr>
+                                                <td>{{date}}</td>
+                                                <td>{{time}}</td>
+                                                <td>{{glucosevalue}}</td>
+                                                <td>{{glucosedesc}}</td>
+                
+                                                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#glucosemodal" data-glucose="{{notes}}">View Patient's Notes</button></td>
+                                                </tr>
+                                              {{/each}}
+                                            </tbody>
+                                        </table>
+                               </div>
+                               <div role="tabpanel" class="tab-pane" id="browseTab1">
+                                  <canvas id="myChart" width="400" height="400"></canvas>
+
+                               </div>
+                               <div role="tabpanel" class="tab-pane" id="browseTab2">
+
+                               </div>
+                           </div>
+                       </div>
+           
+          </div>
+          
+         
+     
+
+          <!--END OF FILE-->
+        
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="datatables.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase-functions.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <script>// Initialize Firebase
+            var config = {
+              apiKey: "AIzaSyCZN-ln1e7A9bPm9EkfJImL8o84uX1D6nA",
+              authDomain: "diabetips-d7a7f.firebaseapp.com",
+              databaseURL: "https://diabetips-d7a7f.firebaseio.com",
+              projectId: "diabetips-d7a7f",
+              storageBucket: "diabetips-d7a7f.appspot.com",
+              messagingSenderId: "210253892126"
+            };
+            firebase.initializeApp(config);
+
+            const database = firebase.database();
+            const functions = firebase.functions();
+            const auth = firebase.auth();
+
+    </script>
+
+    <script>
+      function signout(){
+        firebase.auth().signOut();
+        alert('Logged Out!');
+        window.location='/';
+    }
+    </script>
+    <script>
+        $('#myTab a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
+    </script>
+    <script>
+     var ctx = document.getElementById("myChart");
+      var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+
+    </script>
+     <script>
+          $(document).ready(function(){
+            $('#bpmodal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            if(recipient === ""){
+                document.getElementById("notes").innerHTML = "No Notes Given";
+            }else{
+            document.getElementById("notes").innerHTML = recipient;
+            }
+          })
+        });
+     </script>
+     <script>
+       $(document).ready(function(){
+          $('#glucosemodal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var glucosenotes = button.data('glucose') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            if (glucosenotes === ""){
+              document.getElementById("glunote").innerHTML = "No Notes Given";
+            }else{
+            document.getElementById("glunote").innerHTML = glucosenotes;
+            }
+          })
+        });
+     </script>
+  
+</body>
+</html>
